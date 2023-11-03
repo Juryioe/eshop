@@ -4,7 +4,7 @@ const productsList = [
     title: "iPhone 9",
     description: "An apple mobile which is nothing like apple",
     price: 549,
-    discountPercentage: 12.96,
+    discountPercentage: 0,
     rating: 4.69,
     stock: 94,
     brand: "Apple",
@@ -386,13 +386,22 @@ const productsList = [
 ];
 
 const myFn = (item) => {
+  const priceAfterDiscount =
+    item.price - (item.price * item.discountPercentage) / 100;
+
   let discount;
   item.discountPercentage > 0
     ? (discount = `<div class="discount">-${item.discountPercentage}</div>`)
     : (discount = "");
 
-  const priceAfterDiscount =
-    item.price - (item.price * item.discountPercentage) / 100;
+  let price;
+  item.discountPercentage > 0
+    ? (price = `
+    <span>$${priceAfterDiscount.toFixed(2)}</span><span class="underline">$
+    ${item.price}</span>`)
+    : (price = `<span style="color:black">$
+    ${item.price}</span>`);
+
   const productTemplate = `<div class="product_wrap">
       <div class="product_image">
         ${discount}
@@ -403,10 +412,7 @@ const myFn = (item) => {
           <div class="product_text">${item.description}</div>
       </div>
       <div class="product_buy">
-          <div class="price">
-              <span>$${priceAfterDiscount.toFixed(2)}</span>
-              <span class="underline">$${item.price}</span>
-          </div>
+      <div class="price">${price}</div>
           <a href="#"><button>Add to Cart</button></a>
       </div>
   </div>`;
